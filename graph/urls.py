@@ -3,7 +3,6 @@ from djangorestframework.resources import ModelResource
 from djangorestframework.views import ListOrCreateModelView, InstanceModelView
 from djangorestframework.reverse import reverse
 from djangorestframework.permissions import IsUserOrIsAnonReadOnly
-
 from models import Entity, Relation, Network
 from views import NetworkGexfView
 
@@ -43,14 +42,14 @@ class NetworkResource(ModelResource):
     include=['relations', 'gexf']
 
     def relations(self,instance):
-        print instance
-        print instance.__class__
-        return [reverse('relation', kwargs={'slug': x.slug},
-            request=self.request) for x in instance.relation_set.all()]
+        if hasattr(instance,'relation_set'):
+            return [reverse('relation', kwargs={'slug': x.slug},
+                request=self.request) for x in instance.relation_set.all()]
 
     def gexf(self, instance):
         return reverse('network-gexf', kwargs={'slug': instance.slug},
             request=self.request)
+
 
 
 urlpatterns = patterns('',
