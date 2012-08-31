@@ -3,6 +3,7 @@ from djangorestframework.resources import ModelResource
 from djangorestframework.views import ListOrCreateModelView, InstanceModelView
 from djangorestframework.reverse import reverse
 from djangorestframework.permissions import IsUserOrIsAnonReadOnly
+import json
 from models import Entity, Relation, Network
 
 class AnonReadonlyModelView(ListOrCreateModelView):
@@ -40,11 +41,11 @@ class NetworkResource(ModelResource):
     model=Network
 
     include=['relations']
+    
     def relations(self,instance):
-        print instance
-        print instance.__class__
-        return [reverse('relation', kwargs={'slug': x.slug},
-            request=self.request) for x in instance.relation_set.all()]
+        if hasattr(instance,'relation_set'):
+            return [reverse('relation', kwargs={'slug': x.slug},
+                request=self.request) for x in instance.relation_set.all()]
     
 
 urlpatterns = patterns('',
