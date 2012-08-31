@@ -2,7 +2,15 @@ from django.conf.urls.defaults import patterns, url
 from djangorestframework.resources import ModelResource
 from djangorestframework.views import ListOrCreateModelView, InstanceModelView
 from djangorestframework.reverse import reverse
+from djangorestframework.permissions import IsUserOrIsAnonReadOnly
 from models import Entity, Relation, Network
+
+class AnonReadonlyModelView(ListOrCreateModelView):
+    permissions=(IsUserOrIsAnonReadOnly,)
+
+    
+class AnonReadonlyInstanceView(InstanceModelView):
+    permissions=(IsUserOrIsAnonReadOnly,)
 
 class EntityResource(ModelResource):
     model=Entity
@@ -40,14 +48,14 @@ class NetworkResource(ModelResource):
     
 
 urlpatterns = patterns('',
-    url(r'^networks$',ListOrCreateModelView.as_view(resource=NetworkResource)),
-    url(r'^networks/(?P<slug>[^/]+)/$',ListOrCreateModelView.as_view(resource=NetworkResource),
+    url(r'^networks/$',AnonReadonlyModelView.as_view(resource=NetworkResource)),
+    url(r'^networks/(?P<slug>[^/]+)/$',AnonReadonlyInstanceView.as_view(resource=NetworkResource),
         name='network'),
-    url(r'^entities$', ListOrCreateModelView.as_view(resource=EntityResource)),
+    url(r'^entities/$', AnonReadonlyModelView.as_view(resource=EntityResource)),
     url(r'^entities/(?P<slug>[^/]+)/$',
-    InstanceModelView.as_view(resource=EntityResource), name='entity'),
-    url(r'^relations$',ListOrCreateModelView.as_view(resource=RelationResource)),
-    url(r'^relations/(?P<slug>[^/]+)/$',ListOrCreateModelView.as_view(resource=RelationResource),
+    AnonReadonlyInstanceView.as_view(resource=EntityResource), name='entity'),
+    url(r'^relations/$',AnonReadonlyModelView.as_view(resource=RelationResource)),
+    url(r'^relations/(?P<slug>[^/]+)/$',AnonReadonlyInstanceView.as_view(resource=RelationResource),
         name='relation'),
         )
     
