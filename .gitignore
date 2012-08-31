@@ -2,7 +2,6 @@
 ~*
 *.swp
 .pbundle
-grano/settings.py
 db/*
 env/*
 
