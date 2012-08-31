@@ -4,26 +4,36 @@ from django.db import models
 
 class Network(models.Model):
     """ The network model defines the basic network """
-    title=model.CharField(max_length=500)
-    slug=model.SlugField()
-    description=model.TextField()
-    data=model.TextField()
+    title=models.CharField(max_length=500)
+    slug=models.SlugField()
+    description=models.TextField(null=True,blank=True)
+    data=models.TextField(null=True,blank=True)
+
+    def __unicode__(self):
+        return self.title
 
 class Entity(models.Model):
     """ The entity class defines entities. Each entity has id, title, type,
     description, slug and data. Data is a json """
-    title=model.CharField(max_length=500)
-    type=model.CharField(max_length=100)
-    slug=model.SlugField()
-    description=model.TextFlield()
-    data=model.TextField()
-    network=model.ForeignKey('Network')
+    title=models.CharField(max_length=500)
+    type=models.CharField(max_length=100)
+    slug=models.SlugField()
+    description=models.TextField(null=True,blank=True)
+    data=models.TextField(null=True, blank=True)
+
+    def __unicode__(self):
+        return self.title
 
 class Relation(models.Model):
     """ A relation defines a relation between entities """
-    source=model.ForeignKey('Entity')
-    target=model.ForeighKey('Entity')
-    type=modelCharField(max_length=100)
-    data=model.TextField()
-    network=model.ForeignKey('Network')
+    source=models.ForeignKey('Entity',related_name='relation_source_set')
+    target=models.ForeignKey('Entity',related_name='relation_target_set')
+    type=models.CharField(max_length=100)
+    slug=models.SlugField()
+    description=models.TextField(null=True, blank=True)
+    data=models.TextField(null=True, blank=True)
+    network=models.ForeignKey('Network')
+
+    def __unicode__(self):
+        return "%s->%s"%(self.source.title,self.target.title)
 
