@@ -1,8 +1,24 @@
-var apiurl="http://localhost:8000"
-var sigInst
-var colorspace = {}
-var edgecolorspace = {}
+var apiurl="http://localhost:8000";
+var sigInst;
+var colorspace = {};
+var edgecolorspace = {};
+var zoomlevel=1;
 
+function zoomin() {
+    zoomlevel++;
+    var x=$("#network").width()/2;
+    var y=$("#network").height()/2;
+    sigInst.zoomTo(x,y,zoomlevel);
+    }
+
+function zoomout() {
+    if (zoomlevel>1) {
+        zoomlevel--;
+        }
+    var x=$("#network").width()/2;
+    var y=$("#network").height()/2;
+    sigInst.zoomTo(x,y,zoomlevel);
+    }
 
 function render_references(references) {
     return (references.map(function(reference) {
