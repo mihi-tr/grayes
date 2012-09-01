@@ -11,7 +11,7 @@ class OurRenderer(XMLRenderer):
         return obj
 
 def sanitize(d):
-    return dict([(k,v,) for k,v in d.iteritems() if not k.startswith('_')])
+    return dict([(k,v,) for k,v in d.iteritems() if not k.startswith('_') and not k=='data'])
 
 class NetworkGexfView(View):
     renderers = (DocumentingHTMLRenderer,OurRenderer,)
