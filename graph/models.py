@@ -29,6 +29,7 @@ class Relation(models.Model):
     """ A relation defines a relation between entities """
     source=models.ForeignKey('Entity',related_name='relation_source_set')
     target=models.ForeignKey('Entity',related_name='relation_target_set')
+    title=models.CharField(max_length=500)
     type=models.CharField(max_length=100)
     slug=models.SlugField()
     description=models.TextField(null=True, blank=True)

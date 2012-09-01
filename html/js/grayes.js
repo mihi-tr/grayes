@@ -3,11 +3,8 @@ var sigInst
 var colorspace = {}
 var edgecolorspace = {}
 
-function load_entity_info(event){
-    var node;
-    sigInst.iterNodes(function(n) { node=n;},[event.content[0]]);
-    var slug= node.attr.attributes["slug"]; // FSCK Gexf parser
-    var url= apiurl+"/entities/"+slug+"/?format=json"
+
+function load_entity_infobox(url){
     $.getJSON(url,function(data) {
         $("#infobox-title").html(data.title);
         $("#infobox-type").html(data.type);
@@ -18,14 +15,35 @@ function load_entity_info(event){
         $.each(data.relations,function(i) {
             $.getJSON(data.relations[i], function(data) {
                 html=[];
-                html.push("<li><span class='relation-description'>"+
-                data.description+"</span></li>")
-                $("#infobox-relations").append(html.join(""))
+                html.push("<li id='"+data.slug+"'>",
+                "<span class='source'></span>"," <span class='relation-title'>"+
+                data.title+"</span> <span class='target'></span></li>")
+                $("#infobox-relations").append(html.join(""));
+                var li=$("#"+data.slug);
+                $.getJSON(data.source,function(data) {
+                    li.find(".source").html([
+                        "<a href='javascript:load_entity_infobox(\"",
+                        data.url,"\")'>",data.title,"</a>"
+                    ].join(""))
+                    })
+                $.getJSON(data.target,function(data) {
+                    li.find(".target").html([
+                        "<a href='javascript:load_entity_infobox(\""
+                        ,data.url,"\")'>",data.title,"</a>"
+                        ].join(""));
+                    })
                 })
             });
         })
     }
 
+function load_entity_info(event){
+    var node;
+    sigInst.iterNodes(function(n) { node=n;},[event.content[0]]);
+    var slug= node.attr.attributes["slug"]; // FSCK Gexf parser
+    var url= apiurl+"/entities/"+slug+"/?format=json"
+    load_entity_infobox(url);
+    }
 
 function init() {
 // Instanciate sigma.js and customize rendering :
