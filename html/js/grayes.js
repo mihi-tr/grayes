@@ -56,10 +56,22 @@ function load_entity_infobox(url){
                 " <a class='expander' href='javascript:expand_description(\"",
                 data.slug,"\")'>v</a>",
                 "<div class='moreinfo'><div class='description'>",
-                data.description,"</div></div>",
+                data.description,"</div>",
+                "<h2 class='references-title'>Referenzen</h2>",
+                "<ul class='references'>",
+                "</ul>",
+                "</div>",
                 "</li>")
                 $("#infobox-relations").append(html.join(""));
                 var li=$("#"+data.slug);
+                if (data.data && data.data.references) {
+                    li.find(".references-title").show();
+                    li.find(".references").html(render_references(data.data.references));
+                    }
+                else {
+                    li.find(".references").html("");
+                    li.find(".references-title").hide();
+                    }
                 $.getJSON(data.source,function(data) {
                     li.find(".source").html([
                         "<a href='javascript:load_entity_infobox(\"",

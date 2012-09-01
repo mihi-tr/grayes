@@ -46,3 +46,22 @@
     display: inline-block;
     color: transparent;
     }
+.moreinfo {
+    margin-left: 20px;
+    font-size: 80%;
+    border: 1px dotted black;
+    width: 400px;
+    }
+.moreinfo > ul {
+    padding-left: 0px;
+    list-style: none;
+    }
+.medium {
+    font-style: italic;
+    }
+.medium:before {
+    content: "(";
+    }
+.medium:after {
+    content: ")";
+    }
