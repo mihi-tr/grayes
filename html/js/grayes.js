@@ -4,6 +4,24 @@ var colorspace = {}
 var edgecolorspace = {}
 
 
+function render_references(references) {
+    return (references.map(function(reference) {
+            return([
+                "<li class='reference'>",
+                    "<span class='date'>",
+                        reference.date,
+                    "</span> <a href='",
+                        reference.link,
+                    "' target='_new'>",
+                        reference.title,
+                        "</a> <span class='medium'>",
+                        reference.medium,
+                        "</span>",
+                "</li>"
+                ].join(""))
+        }).join(""))
+    }
+
 function load_entity_infobox(url){
     $.getJSON(url,function(data) {
         $("#infobox-title").html(data.title);
@@ -11,6 +29,14 @@ function load_entity_infobox(url){
         $("#infobox-type").css("background",colorspace[data.type]);
         $("#infobox-description").html(data.description);
         $("#infobox").show();
+        if (data.data && data.data.references) {
+            $("#infobox-references-title").show();
+            $("#infobox-references").html(render_references(data.data.references));
+            }
+        else {
+            $("#infobox-references").html("");
+            $("#infobox-references-title").hide();
+            }
         $("#infobox-relations").html("");
         sigInst.iterNodes(function(n) {
             if (data.slug == n.attr.attributes.slug) {
@@ -26,7 +52,12 @@ function load_entity_infobox(url){
                 html=[];
                 html.push("<li id='"+data.slug+"'>",
                 "<span class='source'></span>"," <span class='relation-title'>"+
-                data.title+"</span> <span class='target'></span></li>")
+                data.title+"</span> <span class='target'></span>",
+                " <a class='expander' href='javascript:expand_description(\"",
+                data.slug,"\")'>v</a>",
+                "<div class='moreinfo'><div class='description'>",
+                data.description,"</div></div>",
+                "</li>")
                 $("#infobox-relations").append(html.join(""));
                 var li=$("#"+data.slug);
                 $.getJSON(data.source,function(data) {
@@ -44,6 +75,15 @@ function load_entity_infobox(url){
                 })
             });
         })
+    }
+function expand_description(id) {
+    e=$("#"+id);
+    if (e.hasClass("expanded")) {
+        e.removeClass("expanded");
+        }
+    else {
+        e.addClass("expanded");
+        }
     }
 
 function load_entity_info(event){
