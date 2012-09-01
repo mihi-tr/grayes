@@ -4,6 +4,7 @@ var colorspace = {};
 var edgecolorspace = {};
 var zoomlevel=1;
 var network='test';
+var converter= new Markdown.Converter;
 
 function zoomin() {
     zoomlevel++;
@@ -44,7 +45,7 @@ function load_entity_infobox(url){
         $("#infobox-title").html(data.title);
         $("#infobox-type").html(data.type);
         $("#infobox-type").css("background",colorspace[data.type]);
-        $("#infobox-description").html(data.description);
+        $("#infobox-description").html(converter.makeHtml(data.description));
         $("#infobox").show();
         if (data.data && data.data.references) {
             $("#infobox-references-title").show();
@@ -75,7 +76,7 @@ function load_entity_infobox(url){
                 " <a class='expander' href='javascript:expand_description(\"",
                 data.slug,"\")'>v</a>",
                 "<div class='moreinfo'><div class='description'>",
-                data.description,"</div>",
+                converter.makeHtml(data.description),"</div>",
                 "<h2 class='references-title'>Referenzen</h2>",
                 "<ul class='references'>",
                 "</ul>",
