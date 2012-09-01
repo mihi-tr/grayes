@@ -12,11 +12,12 @@
     margin-bottom: 5px;
     box-shadow: 0px 0px 5px black;
     }
-    
+#header h1 {
+    margin: 10px;
+    }
 body {
     background: #505050;
     margin: 0px;
-    margin-top: -20px;
     }
 #zoom {
     width: 20px;
