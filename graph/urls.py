@@ -3,14 +3,22 @@ from djangorestframework.resources import ModelResource
 from djangorestframework.views import ListOrCreateModelView, InstanceModelView
 from djangorestframework.reverse import reverse
 from djangorestframework.permissions import IsUserOrIsAnonReadOnly
+from djangorestframework.renderers import JSONRenderer, DocumentingHTMLRenderer
 from models import Entity, Relation, Network
 from views import NetworkGexfView
 
+class OurRenderer(JSONRenderer):
+    def render(self, obj=None, media_type=None):
+        self.view.response.headers['Access-Control-Allow-Origin'] = '*'
+        return super(OurRenderer,self).render(obj,media_type)
+
 class AnonReadonlyModelView(ListOrCreateModelView):
     permissions=(IsUserOrIsAnonReadOnly,)
+    renderers =(DocumentingHTMLRenderer, OurRenderer, )
 
 class AnonReadonlyInstanceView(InstanceModelView):
     permissions=(IsUserOrIsAnonReadOnly,)
+    renderers =(DocumentingHTMLRenderer, OurRenderer, )
 
 class EntityResource(ModelResource):
     model=Entity
