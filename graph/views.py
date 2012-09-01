@@ -8,7 +8,7 @@ from djangorestframework.reverse import reverse
 from gexfsupport import render_gexf
 
 class OurRenderer(XMLRenderer):
-    media_type = 'xml/gexf'
+    media_type = 'xml/gexf, charset=utf-8'
     def render(self, obj=None, media_type=None):
         self.view.response.headers['Access-Control-Allow-Origin'] = '*'
         return obj
