@@ -3,6 +3,7 @@ from djangorestframework.renderers import BaseRenderer, DocumentingHTMLRenderer,
 from models import Network, Relation, Entity
 import networkx
 from networkx.readwrite.gexf import relabel_gexf_graph
+from djangorestframework.reverse import reverse
 
 from gexfsupport import render_gexf
 
@@ -35,3 +36,17 @@ class NetworkGexfView(View):
         graph2 = relabel_gexf_graph(graph)
 
         return '\n'.join(render_gexf(graph2))
+
+class APIOverView(View):
+    def get(self, request):
+        return [{'name': 'networks',
+                 'url': reverse('networks',request=request),
+                },
+                {'name': 'relations',
+                 'url': reverse('relations', request=request),
+                },
+                {'name': 'entities',
+                 'url': reverse('entities', request=request),
+                }]
+    def get_name(self):
+        return self.__class__.__name__
