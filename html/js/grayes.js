@@ -1,5 +1,10 @@
 var apiurl="http://localhost:8000"
 var sigInst
+var colorspace = {
+    "person":"#FF0000",
+    "company":"#666"
+    }
+
 function load_entity_info(event){
     var node;
     sigInst.iterNodes(function(n) { node=n;},[event.content[0]]);
@@ -7,7 +12,6 @@ function load_entity_info(event){
     var url= apiurl+"/entities/"+slug+"/?format=json"
     $.getJSON(url,function(data) {
         var html=[]
-        console.log(data);
         for (i in data) {
             html.push("<div class='attribute'><span class='key'>",i,
             "</span>:<span class='value'>",data[i],"</span></div>")
@@ -22,7 +26,7 @@ sigInst =
 sigma.init(document.getElementById('network')).drawingProperties({
 defaultLabelColor: '#fff',
 defaultLabelSize: 14,
-defaultLabelBGColor: '#fff',
+defaultLabelBGColor: '#ffffff',
 defaultLabelHoverColor: '#000',
 labelThreshold: 6,
 defaultEdgeType: 'curve'
@@ -39,7 +43,10 @@ maxRatio: 32
  // (requires "sigma.parseGexf.js" to be included)
  sigInst.parseGexf(apiurl+'/networks/test/gexf/?format=xml');
 
- sigInst.bind('overnodes',load_entity_info);
+ sigInst.bind('downnodes',load_entity_info);
+ sigInst.iterNodes(function(n) {
+    n.color=colorspace[n.attr.attributes[3].val];
+    })
   
 // Draw the graph :
 sigInst.draw();
