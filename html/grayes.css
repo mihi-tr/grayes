@@ -37,15 +37,19 @@ body {
     margin: 2px;
     }
 #infobox-type {
-    width: 100px;
     border-top: 1px solid #aaa;
     border-bottom: 1px solid #000;
     border-left: 1px solid #aaa;
     border-right: 1px solid #000;
     text-align: center;
     border-radius: 5px;
+    padding: 2px;
+    display: inline;
     }
 
+#infobox-title  {   
+    display: inline-block;
+}
 #infobox {
     display: none;
     background: rgba(255,255,255,0.8);
