@@ -17,8 +17,9 @@ class EntityResource(ModelResource):
     include=['url']
 
     def url(self,instance):
-        return reverse('entity',kwargs={'slug': instance.slug},
-        request=self.request)
+        if hasattr(instance,'slug'):
+            return reverse('entity',kwargs={'slug': instance.slug},
+                request=self.request)
 
 
 class RelationResource(ModelResource):
