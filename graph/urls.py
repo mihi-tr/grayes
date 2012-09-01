@@ -5,7 +5,7 @@ from djangorestframework.reverse import reverse
 from djangorestframework.permissions import IsUserOrIsAnonReadOnly
 from djangorestframework.renderers import JSONRenderer, DocumentingHTMLRenderer
 from models import Entity, Relation, Network
-from views import NetworkGexfView
+from views import NetworkGexfView,APIOverView
 
 class OurRenderer(JSONRenderer):
     media_type="application/json"
@@ -72,16 +72,17 @@ class NetworkResource(ModelResource):
 
 
 urlpatterns = patterns('',
-    url(r'^networks/$',AnonReadonlyModelView.as_view(resource=NetworkResource)),
+    url(r'^networks/$',AnonReadonlyModelView.as_view(resource=NetworkResource), name='networks'),
     url(r'^networks/(?P<slug>[^/]+)/$',AnonReadonlyInstanceView.as_view(resource=NetworkResource),
         name='network'),
     url(r'^networks/(?P<slug>[^/]+)/gexf/$',NetworkGexfView.as_view(),
         name='network-gexf'),
-    url(r'^entities/$', AnonReadonlyModelView.as_view(resource=EntityResource)),
+    url(r'^entities/$', AnonReadonlyModelView.as_view(resource=EntityResource), name='entities'),
     url(r'^entities/(?P<slug>[^/]+)/$',
     AnonReadonlyInstanceView.as_view(resource=EntityResource), name='entity'),
-    url(r'^relations/$',AnonReadonlyModelView.as_view(resource=RelationResource)),
+    url(r'^relations/$',AnonReadonlyModelView.as_view(resource=RelationResource), name='relations'),
     url(r'^relations/(?P<slug>[^/]+)/$',AnonReadonlyInstanceView.as_view(resource=RelationResource),
         name='relation'),
-        )
+    url(r'^$', APIOverView.as_view(), name='api',)
+)
 
