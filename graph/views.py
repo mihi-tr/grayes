@@ -24,5 +24,7 @@ class NetworkGexfView(View):
             entities.add(relation.target)
         for entity in entities:
             graph.add_node(entity.slug, **sanitize(entity.__dict__))
+            
+        self.response['Access-Control-Allow-Origin'] = '*'
 
         return '\n'.join(networkx.generate_gexf(graph))
