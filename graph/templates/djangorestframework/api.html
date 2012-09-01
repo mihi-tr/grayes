@@ -1,0 +1,20 @@
+{% extends "djangorestframework/base.html" %}
+{% block extrahead %}
+<style type="text/css">
+    .relation-instance fieldset.module .form-row {
+        clear: left;
+    }
+    .relation-instance fieldset.module .form-row.target,
+    .relation-instance fieldset.module .form-row.title,
+    .relation-instance fieldset.module .form-row.source {
+        width: 12em;
+        clear: none;
+    }
+    .relation-instance fieldset.module .form-row.target,
+    .relation-instance fieldset.module .form-row.title {
+        float: left;
+        clear: none;
+    }
+
+</style>
+{% endblock %}

@@ -6,6 +6,8 @@ from djangorestframework.permissions import IsUserOrIsAnonReadOnly
 from djangorestframework.renderers import JSONRenderer, DocumentingHTMLRenderer
 from models import Entity, Relation, Network
 from views import NetworkGexfView,APIOverView
+from forms import RelationForm
+
 
 class OurRenderer(JSONRenderer):
     media_type="application/json"
@@ -13,13 +15,16 @@ class OurRenderer(JSONRenderer):
         self.view.response.headers['Access-Control-Allow-Origin'] = '*'
         return super(OurRenderer,self).render(obj,media_type)
 
+
 class AnonReadonlyModelView(ListOrCreateModelView):
     permissions=(IsUserOrIsAnonReadOnly,)
     renderers =(DocumentingHTMLRenderer, OurRenderer, )
 
+
 class AnonReadonlyInstanceView(InstanceModelView):
     permissions=(IsUserOrIsAnonReadOnly,)
     renderers =(DocumentingHTMLRenderer, OurRenderer, )
+
 
 class EntityResource(ModelResource):
     model=Entity
@@ -29,7 +34,7 @@ class EntityResource(ModelResource):
         if hasattr(instance,'slug'):
             return reverse('entity',kwargs={'slug': instance.slug},
                 request=self.request)
-    
+
     def relations(self,instance):
         if hasattr(instance,'relation_source_set'):
             return [reverse('relation', kwargs={'slug': x.slug},
@@ -41,6 +46,7 @@ class EntityResource(ModelResource):
 
 class RelationResource(ModelResource):
     model=Relation
+    form=RelationForm
 
     def source(self, instance):
         return reverse('entity', kwargs={'slug': instance.source.slug},
@@ -53,6 +59,7 @@ class RelationResource(ModelResource):
     def network(self, instance):
         return reverse('network', kwargs={'slug': instance.network.slug},
             request=self.request)
+
 
 class NetworkResource(ModelResource):
     model=Network
