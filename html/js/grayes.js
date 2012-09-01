@@ -43,6 +43,8 @@ maxRatio: 32
  // (requires "sigma.parseGexf.js" to be included)
  sigInst.parseGexf(apiurl+'/networks/test/gexf/?format=xml');
 
+ var nodetypes=[]
+ var edgetypes=[]
  sigInst.bind('downnodes',load_entity_info);
  sigInst.iterNodes(function(n) {
     n.color=colorspace[n.attr.attributes[3].val];
