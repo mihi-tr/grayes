@@ -1,6 +1,18 @@
+var apiurl="http://localhost:8000"
+var sigInst
+function load_entity_info(event){
+    var node;
+    sigInst.iterNodes(function(n) { node=n;},[event.content[0]]);
+    var slug= node.attr.attributes[0].val; // FSCK Gexf parser
+    var url= apiurl+"/entities/"+slug+"/?format=json"
+    $.get(url,function(data) {
+        console.log(data);
+        })
+    }
+
 function init() {
 // Instanciate sigma.js and customize rendering :
-var sigInst =
+sigInst =
 sigma.init(document.getElementById('network')).drawingProperties({
 defaultLabelColor: '#fff',
 defaultLabelSize: 14,
@@ -19,14 +31,16 @@ maxRatio: 32
  
  // Parse a GEXF encoded file to fill the graph
  // (requires "sigma.parseGexf.js" to be included)
- sigInst.parseGexf('http://localhost:8000/networks/test/gexf/?format=xml');
+ sigInst.parseGexf(apiurl+'/networks/test/gexf/?format=xml');
+
+ sigInst.bind('overnodes',load_entity_info);
   
 // Draw the graph :
 sigInst.draw();
 }
-   
+
 if (document.addEventListener) {
- document.addEventListener("DOMContentLoaded", init, false);
+document.addEventListener('DOMContentLoaded', init, false);
 } else {
-   window.onload = init;
-   }
+window.onload = init;
+}
