@@ -5,8 +5,14 @@ function load_entity_info(event){
     sigInst.iterNodes(function(n) { node=n;},[event.content[0]]);
     var slug= node.attr.attributes[0].val; // FSCK Gexf parser
     var url= apiurl+"/entities/"+slug+"/?format=json"
-    $.get(url,function(data) {
+    $.getJSON(url,function(data) {
+        var html=[]
         console.log(data);
+        for (i in data) {
+            html.push("<div class='attribute'><span class='key'>",i,
+            "</span>:<span class='value'>",data[i],"</span></div>")
+            }
+        $("#infobox").html(html.join(""))    
         })
     }
 

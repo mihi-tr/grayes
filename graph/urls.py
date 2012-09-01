@@ -8,6 +8,7 @@ from models import Entity, Relation, Network
 from views import NetworkGexfView
 
 class OurRenderer(JSONRenderer):
+    media_type="application/json"
     def render(self, obj=None, media_type=None):
         self.view.response.headers['Access-Control-Allow-Origin'] = '*'
         return super(OurRenderer,self).render(obj,media_type)
