@@ -75,10 +75,10 @@ maxRatio: 32
         nodetypes.push(type)
         }
     })
- var step=255./(nodetypes.length-1);
+ var step=255./(nodetypes.length>1?nodetypes.length-1:1);
  for (i=0.; i<nodetypes.length; i++) {
 
-    colorspace[nodetypes[i]]="hsl("+i*step+",100%,75%)";
+    colorspace[nodetypes[i]]="hsl("+i*step+",100%,80%)";
     }
  
     
