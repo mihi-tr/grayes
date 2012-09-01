@@ -21,10 +21,11 @@ class NetworkGexfView(View):
         entities = set()
 
         for relation in n.relation_set.all():
-            graph.add_edge(relation.source.slug, relation.target.slug, **sanitize(relation.__dict__))
             entities.add(relation.source)
             entities.add(relation.target)
         for entity in entities:
-            graph.add_node(entity.slug, **sanitize(entity.__dict__))
+            graph.add_node(entity.pk, **sanitize(entity.__dict__))
+        for relation in n.relation_set.all():
+            graph.add_edge(relation.source.pk, relation.target.pk, **sanitize(relation.__dict__))
 
         return '\n'.join(networkx.generate_gexf(graph))
