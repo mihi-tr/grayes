@@ -56,28 +56,6 @@
 	<div class='content-main'>
 	    <h1>{{ name }}</h1>
 	    <p>{{ description }}</p>
-	    <div class='module'>
-	    <pre><b>{{ response.status }} {{ response.status_text }}</b>{% autoescape off %}
-{% for key, val in response.headers.items %}<b>{{ key }}:</b> {{ val|urlize_quoted_links }}
-{% endfor %}
-{{ content|urlize_quoted_links }}</pre>{% endautoescape %}</div>
-
-	{% if 'GET' in view.allowed_methods %}
-			<form>
-				<fieldset class='module aligned'>
-				<h2>GET {{ name }}</h2>
-				<div class='submit-row' style='margin: 0; border: 0'>
-				<a href='{{ request.get_full_path }}' rel="nofollow" style='float: left'>GET</a>
-				{% for format in available_formats %}
-				  {% with FORMAT_PARAM|add:"="|add:format as param %}
-				    [<a href='{{ request.get_full_path|add_query_param:param }}' rel="nofollow">{{ format }}</a>]
-				  {% endwith %}
-				{% endfor %}
-				</div>
-				</fieldset>
-			</form>
-	{% endif %}
-
 	{# Only display the POST/PUT/DELETE forms if method tunneling via POST forms is enabled and the user has permissions on this view. #}
 	{% if METHOD_PARAM and response.status != 403 %}
 
@@ -144,6 +122,28 @@
 				</fieldset>
 				</form>
 		{% endif %}
+	    <div class='module'>
+	    <pre><b>{{ response.status }} {{ response.status_text }}</b>{% autoescape off %}
+{% for key, val in response.headers.items %}<b>{{ key }}:</b> {{ val|urlize_quoted_links }}
+{% endfor %}
+{{ content|urlize_quoted_links }}</pre>{% endautoescape %}</div>
+
+	{% if 'GET' in view.allowed_methods %}
+			<form>
+				<fieldset class='module aligned'>
+				<h2>GET {{ name }}</h2>
+				<div class='submit-row' style='margin: 0; border: 0'>
+				<a href='{{ request.get_full_path }}' rel="nofollow" style='float: left'>GET</a>
+				{% for format in available_formats %}
+				  {% with FORMAT_PARAM|add:"="|add:format as param %}
+				    [<a href='{{ request.get_full_path|add_query_param:param }}' rel="nofollow">{{ format }}</a>]
+				  {% endwith %}
+				{% endfor %}
+				</div>
+				</fieldset>
+			</form>
+	{% endif %}
+
 
 	{% endif %}
 	</div>
