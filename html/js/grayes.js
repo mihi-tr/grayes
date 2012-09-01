@@ -19,7 +19,7 @@ maxRatio: 32
  
  // Parse a GEXF encoded file to fill the graph
  // (requires "sigma.parseGexf.js" to be included)
- sigInst.parseGexf('/network/test/gexf/?format=xml');
+ sigInst.parseGexf('http://localhost:8000/networks/test/gexf/?format=xml');
   
 // Draw the graph :
 sigInst.draw();
