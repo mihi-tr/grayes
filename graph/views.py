@@ -6,6 +6,8 @@ import networkx
 class OurRenderer(XMLRenderer):
     media_type = 'xml/gexf'
     def render(self, obj=None, media_type=None):
+        print self.view.response.__class__
+        self.view.response.headers['Access-Control-Allow-Origin'] = '*'
         return obj
 
 def sanitize(d):
@@ -24,7 +26,5 @@ class NetworkGexfView(View):
             entities.add(relation.target)
         for entity in entities:
             graph.add_node(entity.slug, **sanitize(entity.__dict__))
-            
-        self.response['Access-Control-Allow-Origin'] = '*'
 
         return '\n'.join(networkx.generate_gexf(graph))
