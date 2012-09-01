@@ -23,12 +23,20 @@ class AnonReadonlyInstanceView(InstanceModelView):
 
 class EntityResource(ModelResource):
     model=Entity
-    include=['url']
+    include=['url','relations']
 
     def url(self,instance):
         if hasattr(instance,'slug'):
             return reverse('entity',kwargs={'slug': instance.slug},
                 request=self.request)
+    
+    def relations(self,instance):
+        if hasattr(instance,'relation_source_set'):
+            return [reverse('relation', kwargs={'slug': x.slug},
+                request=self.request) for x in
+                instance.relation_source_set.all()]+ [reverse('relation', kwargs={'slug': x.slug},
+                request=self.request) for x in
+                instance.relation_target_set.all()]
 
 
 class RelationResource(ModelResource):
