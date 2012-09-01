@@ -3,6 +3,7 @@ var sigInst;
 var colorspace = {};
 var edgecolorspace = {};
 var zoomlevel=1;
+var network='test';
 
 function zoomin() {
     zoomlevel++;
@@ -53,7 +54,6 @@ function load_entity_infobox(url){
             $("#infobox-references").html("");
             $("#infobox-references-title").hide();
             }
-        $("#infobox-relations").html("");
         sigInst.iterNodes(function(n) {
             if (data.slug == n.attr.attributes.slug) {
                 n.active=true;
@@ -63,8 +63,11 @@ function load_entity_infobox(url){
                 };
             })
         sigInst.draw();    
+        $("#infobox-relations").html("");
         $.each(data.relations,function(i) {
             $.getJSON(data.relations[i], function(data) {
+                if (data.network.search(network)<0) {
+                    return };
                 html=[];
                 html.push("<li id='"+data.slug+"'>",
                 "<span class='source'></span>"," <span class='relation-title'>"+
@@ -143,7 +146,7 @@ maxRatio: 32
  
  // Parse a GEXF encoded file to fill the graph
  // (requires "sigma.parseGexf.js" to be included)
- sigInst.parseGexf(apiurl+'/networks/test/gexf/?format=xml');
+ sigInst.parseGexf(apiurl+'/networks/'+network+'/gexf/?format=xml');
 
  var nodetypes=[]
  sigInst.iterNodes(function(n) {
