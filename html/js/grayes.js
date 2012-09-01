@@ -12,6 +12,15 @@ function load_entity_infobox(url){
         $("#infobox-description").html(data.description);
         $("#infobox").show();
         $("#infobox-relations").html("");
+        sigInst.iterNodes(function(n) {
+            if (data.slug == n.attr.attributes.slug) {
+                n.active=true;
+                }
+            else {
+                n.active=false;
+                };
+            })
+        sigInst.draw();    
         $.each(data.relations,function(i) {
             $.getJSON(data.relations[i], function(data) {
                 html=[];
