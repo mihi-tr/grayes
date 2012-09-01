@@ -1,14 +1,11 @@
 var apiurl="http://localhost:8000"
 var sigInst
-var colorspace = {
-    "person":"#FF0000",
-    "company":"#666"
-    }
+var colorspace = {}
 
 function load_entity_info(event){
     var node;
     sigInst.iterNodes(function(n) { node=n;},[event.content[0]]);
-    var slug= node.attr.attributes[0].val; // FSCK Gexf parser
+    var slug= node.attr.attributes["slug"]; // FSCK Gexf parser
     var url= apiurl+"/entities/"+slug+"/?format=json"
     $.getJSON(url,function(data) {
         var html=[]
@@ -19,6 +16,7 @@ function load_entity_info(event){
         $("#infobox").html(html.join(""))    
         })
     }
+
 
 function init() {
 // Instanciate sigma.js and customize rendering :
@@ -44,10 +42,32 @@ maxRatio: 32
  sigInst.parseGexf(apiurl+'/networks/test/gexf/?format=xml');
 
  var nodetypes=[]
+ sigInst.iterNodes(function(n) {
+    var type=n.attr.attributes["type"]
+    if ($.inArray(type,nodetypes)<0) {
+        nodetypes.push(type)
+        }
+    })
+ var step=255./(nodetypes.length-1);
+ for (i=0.; i<nodetypes.length; i++) {
+
+    colorspace[nodetypes[i]]="hsl("+i*step+",100%,75%)";
+    }
+ 
+    
+ console.log(colorspace)   
  var edgetypes=[]
+ sigInst.iterEdges(function(n) {
+    var type=n.attr.attributes["type"]
+    console.log(type)
+    if ($.inArray(type,edgetypes)<0) {
+        edgetypes.push(type)
+        }
+    })
+ console.log(edgetypes)
  sigInst.bind('downnodes',load_entity_info);
  sigInst.iterNodes(function(n) {
-    n.color=colorspace[n.attr.attributes["title"]];
+    n.color=colorspace[n.attr.attributes["type"]];
     })
   
 // Draw the graph :
