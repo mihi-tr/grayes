@@ -1,6 +1,7 @@
 var apiurl="http://localhost:8000"
 var sigInst
 var colorspace = {}
+var edgecolorspace = {}
 
 function load_entity_info(event){
     var node;
@@ -59,15 +60,22 @@ maxRatio: 32
  var edgetypes=[]
  sigInst.iterEdges(function(n) {
     var type=n.attr.attributes["type"]
-    console.log(type)
     if ($.inArray(type,edgetypes)<0) {
         edgetypes.push(type)
         }
     })
- console.log(edgetypes)
+ var step=255./(edgetypes.length-1);
+ for (i=0.; i<edgetypes.length; i++) {
+
+    edgecolorspace[edgetypes[i]]="hsl("+i*step+",100%,75%)";
+    }
+
  sigInst.bind('downnodes',load_entity_info);
  sigInst.iterNodes(function(n) {
     n.color=colorspace[n.attr.attributes["type"]];
+    })
+ sigInst.iterEdges(function(n) {
+    n.color=edgecolorspace[n.attr.attributes["type"]];
     })
   
 // Draw the graph :
