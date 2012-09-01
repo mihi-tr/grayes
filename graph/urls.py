@@ -47,8 +47,9 @@ class NetworkResource(ModelResource):
                 request=self.request) for x in instance.relation_set.all()]
 
     def gexf(self, instance):
-        return reverse('network-gexf', kwargs={'slug': instance.slug},
-            request=self.request)
+        if hasattr(instance,'slug'):
+            return reverse('network-gexf', kwargs={'slug': instance.slug},
+                request=self.request)
 
 
 
