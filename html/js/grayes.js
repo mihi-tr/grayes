@@ -9,12 +9,11 @@ function load_entity_info(event){
     var slug= node.attr.attributes["slug"]; // FSCK Gexf parser
     var url= apiurl+"/entities/"+slug+"/?format=json"
     $.getJSON(url,function(data) {
-        var html=[]
-        for (i in data) {
-            html.push("<div class='attribute'><span class='key'>",i,
-            "</span>:<span class='value'>",data[i],"</span></div>")
-            }
-        $("#infobox").html(html.join(""))    
+        $("#infobox-title").html(data.title);
+        $("#infobox-type").html(data.type);
+        $("#infobox-type").css("background",colorspace[data.type]);
+        $("#infobox-description").html(data.description);
+        $("#infobox").show();
         })
     }
 
@@ -56,7 +55,6 @@ maxRatio: 32
     }
  
     
- console.log(colorspace)   
  var edgetypes=[]
  sigInst.iterEdges(function(n) {
     var type=n.attr.attributes["type"]

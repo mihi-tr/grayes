@@ -4,3 +4,16 @@
     background: #505050;
     }
 
+#infobox-type {
+    width: 100px;
+    border-top: 1px solid #aaa;
+    border-bottom: 1px solid #000;
+    border-left: 1px solid #aaa;
+    border-right: 1px solid #000;
+    text-align: center;
+    border-radius: 5px;
+    }
+
+#infobox {
+    display: none;
+    }
