@@ -1,15 +1,26 @@
 <!doctype html>
 <html>
 <head>
+<title>Grayes - networking made simple</title>
 <script src="js/sigma.min.js"></script>
 <script src="js/sigma.parseGexf.js"></script>
+<script src="js/sigma.forceatlas2.js"></script>
 <script src="js/jquery-1.8.1.min.js"></script>
+<script src="js/Markdown.Converter.js"></script>
 <script src="js/grayes.js"></script>
 <link rel="stylesheet" href="grayes.css" type="text/css" media="screen" />
 </head>
 <body>
-<div id='network'></div>
+<div id='header'>
+<h1>Grayes - Networking made simple</h1>
+</div>
+<div id='network'>
+<div id='zoom'>
+<a href='javascript:zoomin()'>+</a>
+<a href='javascript:zoomout()'>-</a>
+</div></div>
 <div id='infobox'>
+<a id='infobox-close' href='#' onclick='$("#infobox").hide()'>&lt;</a>
 <h1 id="infobox-title"></h1>
 <div id="infobox-type"></div>
 <div id="infobox-description"></div>

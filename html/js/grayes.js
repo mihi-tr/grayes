@@ -1,8 +1,26 @@
-var apiurl="http://localhost:8000"
-var sigInst
-var colorspace = {}
-var edgecolorspace = {}
+var apiurl="http://localhost:8000";
+var sigInst;
+var colorspace = {};
+var edgecolorspace = {};
+var zoomlevel=1;
+var network='test';
+var converter= new Markdown.Converter;
 
+function zoomin() {
+    zoomlevel++;
+    var x=$("#network").width()/2;
+    var y=$("#network").height()/2;
+    sigInst.zoomTo(x,y,zoomlevel);
+    }
+
+function zoomout() {
+    if (zoomlevel>1) {
+        zoomlevel--;
+        }
+    var x=$("#network").width()/2;
+    var y=$("#network").height()/2;
+    sigInst.zoomTo(x,y,zoomlevel);
+    }
 
 function render_references(references) {
     return (references.map(function(reference) {
@@ -27,7 +45,7 @@ function load_entity_infobox(url){
         $("#infobox-title").html(data.title);
         $("#infobox-type").html(data.type);
         $("#infobox-type").css("background",colorspace[data.type]);
-        $("#infobox-description").html(data.description);
+        $("#infobox-description").html(converter.makeHtml(data.description));
         $("#infobox").show();
         if (data.data && data.data.references) {
             $("#infobox-references-title").show();
@@ -37,7 +55,6 @@ function load_entity_infobox(url){
             $("#infobox-references").html("");
             $("#infobox-references-title").hide();
             }
-        $("#infobox-relations").html("");
         sigInst.iterNodes(function(n) {
             if (data.slug == n.attr.attributes.slug) {
                 n.active=true;
@@ -47,8 +64,11 @@ function load_entity_infobox(url){
                 };
             })
         sigInst.draw();    
+        $("#infobox-relations").html("");
         $.each(data.relations,function(i) {
             $.getJSON(data.relations[i], function(data) {
+                if (data.network.search(network)<0) {
+                    return };
                 html=[];
                 html.push("<li id='"+data.slug+"'>",
                 "<span class='source'></span>"," <span class='relation-title'>"+
@@ -56,10 +76,22 @@ function load_entity_infobox(url){
                 " <a class='expander' href='javascript:expand_description(\"",
                 data.slug,"\")'>v</a>",
                 "<div class='moreinfo'><div class='description'>",
-                data.description,"</div></div>",
+                converter.makeHtml(data.description),"</div>",
+                "<h2 class='references-title'>Referenzen</h2>",
+                "<ul class='references'>",
+                "</ul>",
+                "</div>",
                 "</li>")
                 $("#infobox-relations").append(html.join(""));
                 var li=$("#"+data.slug);
+                if (data.data && data.data.references) {
+                    li.find(".references-title").show();
+                    li.find(".references").html(render_references(data.data.references));
+                    }
+                else {
+                    li.find(".references").html("");
+                    li.find(".references-title").hide();
+                    }
                 $.getJSON(data.source,function(data) {
                     li.find(".source").html([
                         "<a href='javascript:load_entity_infobox(\"",
@@ -115,7 +147,7 @@ maxRatio: 32
  
  // Parse a GEXF encoded file to fill the graph
  // (requires "sigma.parseGexf.js" to be included)
- sigInst.parseGexf(apiurl+'/networks/test/gexf/?format=xml');
+ sigInst.parseGexf(apiurl+'/networks/'+network+'/gexf/?format=xml');
 
  var nodetypes=[]
  sigInst.iterNodes(function(n) {
@@ -154,6 +186,9 @@ maxRatio: 32
   
 // Draw the graph :
 sigInst.draw();
+sigInst.startForceAtlas2();
+setTimeout(function() {sigInst.stopForceAtlas2()},5000);
+
 }
 
 if (document.addEventListener) {

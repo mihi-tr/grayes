@@ -1,21 +1,76 @@
 #network {
-    width: 600px;
-    height: 400px;
+    width: 100%;
+    height: 500px;
     background: #505050;
+    position: relative;
     }
 
+#header {
+    background: black;
+    color: white;
+    padding: 5px;
+    margin-bottom: 5px;
+    box-shadow: 0px 0px 5px black;
+    }
+#header h1 {
+    margin: 10px;
+    }
+body {
+    background: #505050;
+    margin: 0px;
+    }
+#zoom {
+    width: 20px;
+    position: absolute;
+    z-index: 9001;
+    top: 10px;
+    right: 10px;
+    }
+#zoom a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    width: 15px;
+    height: 15px;
+    background: black;
+    border-radius: 2px;
+    text-align: center;
+    margin: 2px;
+    }
 #infobox-type {
-    width: 100px;
     border-top: 1px solid #aaa;
     border-bottom: 1px solid #000;
     border-left: 1px solid #aaa;
     border-right: 1px solid #000;
     text-align: center;
     border-radius: 5px;
+    padding: 2px;
+    display: inline;
     }
 
+#infobox-title  {   
+    display: inline-block;
+}
 #infobox {
     display: none;
+    background: rgba(255,255,255,0.8);
+    padding: 5px;
+    margin-top: 10px;
+    width: 50%;
+    border-radius: 0px 10px 10px 0px;
+    position: absolute;
+    top: 70px;
+    left: 0px;
+    }
+#infobox-close {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    background: url('img/close.png');
+    color: transparent;
+    width: 15px;
+    height: 15px;
+    display: inline-block;
     }
 #infobox h2 {
     font-size: 120%;
@@ -45,4 +100,23 @@
     height: 15px;
     display: inline-block;
     color: transparent;
+    }
+.moreinfo {
+    margin-left: 20px;
+    font-size: 80%;
+    border: 1px dotted black;
+    width: 400px;
+    }
+.moreinfo > ul {
+    padding-left: 0px;
+    list-style: none;
+    }
+.medium {
+    font-style: italic;
+    }
+.medium:before {
+    content: "(";
+    }
+.medium:after {
+    content: ")";
     }
