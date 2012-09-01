@@ -14,7 +14,7 @@ class RelationForm(forms.models.ModelForm):
         def sort_fields(x,y):
             if (x in _priority_fields) == (y in _priority_fields):
                 if x in _priority_fields:
-                    return _priority_fields.index(y) - _priority_fields.index(x)
+                    return _priority_fields.index(x) - _priority_fields.index(y)
                 return 0
             if x in _priority_fields:
                 return -1
