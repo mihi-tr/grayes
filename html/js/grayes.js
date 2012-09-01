@@ -47,7 +47,7 @@ maxRatio: 32
  var edgetypes=[]
  sigInst.bind('downnodes',load_entity_info);
  sigInst.iterNodes(function(n) {
-    n.color=colorspace[n.attr.attributes[3].val];
+    n.color=colorspace[n.attr.attributes["title"]];
     })
   
 // Draw the graph :
