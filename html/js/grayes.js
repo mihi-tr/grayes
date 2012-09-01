@@ -14,6 +14,15 @@ function load_entity_info(event){
         $("#infobox-type").css("background",colorspace[data.type]);
         $("#infobox-description").html(data.description);
         $("#infobox").show();
+        $("#infobox-relations").html("");
+        $.each(data.relations,function(i) {
+            $.getJSON(data.relations[i], function(data) {
+                html=[];
+                html.push("<li><span class='relation-description'>"+
+                data.description+"</span></li>")
+                $("#infobox-relations").append(html.join(""))
+                })
+            });
         })
     }
 
