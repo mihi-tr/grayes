@@ -26,7 +26,11 @@ function load_entity_infobox(url){
                 html=[];
                 html.push("<li id='"+data.slug+"'>",
                 "<span class='source'></span>"," <span class='relation-title'>"+
-                data.title+"</span> <span class='target'></span></li>")
+                data.title+"</span> <span class='target'></span>",
+                " <a class='expander' href='javascript:expand_description(\"",
+                data.slug,"\")'>v</a>",
+                "<div class='description'>",data.description,"</div>",
+                "</li>")
                 $("#infobox-relations").append(html.join(""));
                 var li=$("#"+data.slug);
                 $.getJSON(data.source,function(data) {
@@ -44,6 +48,15 @@ function load_entity_infobox(url){
                 })
             });
         })
+    }
+function expand_description(id) {
+    e=$("#"+id);
+    if (e.hasClass("expanded")) {
+        e.removeClass("expanded");
+        }
+    else {
+        e.addClass("expanded");
+        }
     }
 
 function load_entity_info(event){

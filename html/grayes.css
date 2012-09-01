@@ -17,3 +17,32 @@
 #infobox {
     display: none;
     }
+#infobox h2 {
+    font-size: 120%;
+    }
+#infobox-relations {
+    padding-left: 0px;
+    }
+#infobox-relations > li {
+    list-style: none;
+    }
+#infobox-relations > li > .description {
+    display: none;
+    }
+#infobox-relations > li.expanded > .description {
+    display: block;
+    }
+#infobox-relations > li > a.expander {
+    background-image: url('img/expand.png');
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    color: transparent;
+    }
+#infobox-relations > li.expanded > a.expander {
+    background-image: url('img/collapse.png');
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    color: transparent;
+    }
