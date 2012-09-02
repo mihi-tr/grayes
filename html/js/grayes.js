@@ -3,8 +3,9 @@ var sigInst;
 var colorspace = {};
 var edgecolorspace = {};
 var zoomlevel=1;
-var network='grasser-network';
+var defaultnetwork='grasser-network';
 var converter= new Markdown.Converter;
+var mediaurl="/media/"
 
 function zoomin() {
     zoomlevel++;
@@ -40,12 +41,40 @@ function render_references(references) {
         }).join(""))
     }
 
+function clean_graph() {
+    sigInst.iterNodes(function(n) {sigInst.dropNode(n.id);});
+    sigInst.iterEdges(function(n) {sigInst.dropEdge(n.id);});
+    }
+
+function load_networks() {
+    $.getJSON(apiurl+"/networks/?format=json",function(data) {
+        for (i in data) {
+            $("#networkselector").append([
+            "<option value='",data[i].slug,"'",
+            data[i].slug==defaultnetwork?"selected":"",
+            ">",
+            data[i].title,"</option>"
+            ].join(""));
+            }
+    });
+    }
+function select_network() {
+    clean_graph();
+    var network=$("#networkselector").val();
+    load_network(network);
+    }
 function load_entity_infobox(url){
     $.getJSON(url,function(data) {
         $("#infobox-title").html(data.title);
         $("#infobox-type").html(data.type);
         $("#infobox-type").css("background",colorspace[data.type]);
         $("#infobox-description").html(converter.makeHtml(data.description));
+        if (data.image) {
+            $("#infobox-image").attr("src",mediaurl+data.image);
+           }
+        else { 
+            $("#infobox-image").attr("src","");
+            }
         $("#infobox").show();
         if (data.data && data.data.references) {
             $("#infobox-references-title").show();
@@ -127,6 +156,7 @@ function load_entity_info(event){
     }
 
 function init() {
+    load_networks();
     $('#network').css("height",$(window).height()-100+"px")
 // Instanciate sigma.js and customize rendering :
 sigInst =
@@ -145,6 +175,28 @@ maxEdgeSize: 1
 }).mouseProperties({
 maxRatio: 32
 });
+
+ sigInst.bind('downnodes',load_entity_info);
+ sigInst.bind('overnodes',function(event) {
+    var node
+    sigInst.iterNodes(function(n) {node=n},[event.content[0]]);
+    if (node.attr.attributes.image) {
+        $("#nodeimage").attr("src",mediaurl+node.attr.attributes.image);
+        $("#nodeimage").css({"position":"absolute","left":node.displayX,"top":node.displayY+80,
+            "width":"100px",
+            "border-radius":"5px",
+            "opacity":0.8
+            });
+        $("#nodeimage").show();
+        }
+    });
+ sigInst.bind("outnodes",function(event) {
+    $("#nodeimage").hide();
+    })
+load_network(defaultnetwork);
+}
+
+function load_network(network) {
  
  // Parse a GEXF encoded file to fill the graph
  // (requires "sigma.parseGexf.js" to be included)
@@ -177,7 +229,6 @@ maxRatio: 32
     edgecolorspace[edgetypes[i]]="hsl("+i*step+",100%,75%)";
     }
 
- sigInst.bind('downnodes',load_entity_info);
  sigInst.iterNodes(function(n) {
     n.color=colorspace[n.attr.attributes["type"]];
     })

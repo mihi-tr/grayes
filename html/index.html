@@ -14,6 +14,10 @@
 <body>
 <div id='header'>
 <h1>Grayes - Networking made simple</h1>
+<label for="networkselector">Select network:</label>
+<select id="networkselector">
+</select>
+<input type="submit" value="go" onclick="select_network()" />
 </div>
 <div id='network'>
 <div id='zoom'>
@@ -24,12 +28,14 @@
 <a id='infobox-close' href='#' onclick='$("#infobox").hide()'>&lt;</a>
 <h1 id="infobox-title"></h1>
 <div id="infobox-type"></div>
-<div id="infobox-description"></div>
+<div><img id="infobox-image" />
+<div id="infobox-description"></div></div>
 <h2 id="infobox-references-title">Referenzen</h2>
 <ul id="infobox-references">
 </ul>
 <h2 id="infobox-relations-title">Verbindungen</h2>
 <ul id="infobox-relations"></ul>
 </div>
+<img id="nodeimage" />
 </body>
 </html>
