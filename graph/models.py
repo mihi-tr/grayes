@@ -20,6 +20,7 @@ class Entity(models.Model):
     type=models.CharField(max_length=100)
     slug=models.SlugField()
     description=models.TextField(null=True,blank=True)
+    image=models.ImageField(null=True,blank=True,upload_to="entity-images/")
     data=JSONField(null=True,blank=True)
 
     def __unicode__(self):

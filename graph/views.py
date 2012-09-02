@@ -14,7 +14,7 @@ class OurRenderer(XMLRenderer):
         return obj
 
 def sanitize(d, pk):
-    x = dict([(k,v,) for k,v in d.iteritems() if not k.startswith('_') and not k=='data'])
+    x = dict([(k,v,) for k,v in d.iteritems() if not k.startswith('_') and not k=='data' and v])
     x['label'] = x['title'] if 'title' in x else x['slug']
     x['id'] = pk
     return x

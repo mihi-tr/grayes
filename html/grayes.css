@@ -51,6 +51,12 @@ body {
 #infobox-title  {   
     display: inline-block;
 }
+#infobox-image {
+    float: right;
+    width: 100px;
+    margin-right: 20px;
+    border-radius: 5px;
+    }
 #infobox {
     display: none;
     background: rgba(255,255,255,0.8);
@@ -61,6 +67,7 @@ body {
     position: absolute;
     top: 70px;
     left: 0px;
+    z-index: 9000;
     }
 #infobox-close {
     position: absolute;

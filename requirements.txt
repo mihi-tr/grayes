@@ -2,3 +2,4 @@ django
 -e git+git://github.com/fin/django-rest-framework.git#egg=djangorestframework
 networkx
 -e git+git://github.com/fin/django-json-field.git#egg=django-json-field
+PIL

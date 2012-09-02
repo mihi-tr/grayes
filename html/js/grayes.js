@@ -5,6 +5,7 @@ var edgecolorspace = {};
 var zoomlevel=1;
 var network='grasser-network';
 var converter= new Markdown.Converter;
+var mediaurl="/media/"
 
 function zoomin() {
     zoomlevel++;
@@ -46,6 +47,12 @@ function load_entity_infobox(url){
         $("#infobox-type").html(data.type);
         $("#infobox-type").css("background",colorspace[data.type]);
         $("#infobox-description").html(converter.makeHtml(data.description));
+        if (data.image) {
+            $("#infobox-image").attr("src",mediaurl+data.image);
+           }
+        else { 
+            $("#infobox-image").attr("src","");
+            }
         $("#infobox").show();
         if (data.data && data.data.references) {
             $("#infobox-references-title").show();
@@ -178,6 +185,22 @@ maxRatio: 32
     }
 
  sigInst.bind('downnodes',load_entity_info);
+ sigInst.bind('overnodes',function(event) {
+    var node
+    sigInst.iterNodes(function(n) {node=n},[event.content[0]]);
+    if (node.attr.attributes.image) {
+        $("#nodeimage").attr("src",mediaurl+node.attr.attributes.image);
+        $("#nodeimage").css({"position":"absolute","left":node.displayX,"top":node.displayY+80,
+            "width":"100px",
+            "border-radius":"5px",
+            "opacity":0.8
+            });
+        $("#nodeimage").show();
+        }
+    });
+ sigInst.bind("outnodes",function(event) {
+    $("#nodeimage").hide();
+    })
  sigInst.iterNodes(function(n) {
     n.color=colorspace[n.attr.attributes["type"]];
     })
