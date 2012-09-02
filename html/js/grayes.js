@@ -67,7 +67,7 @@ function load_entity_infobox(url){
         $("#infobox-relations").html("");
         $.each(data.relations,function(i) {
             $.getJSON(data.relations[i], function(data) {
-                if (data.network.search(network)<0) {
+                if (data.network_url.search(network)<0) {
                     return };
                 html=[];
                 html.push("<li id='"+data.slug+"'>",
@@ -92,13 +92,13 @@ function load_entity_infobox(url){
                     li.find(".references").html("");
                     li.find(".references-title").hide();
                     }
-                $.getJSON(data.source,function(data) {
+                $.getJSON(data.source_url,function(data) {
                     li.find(".source").html([
                         "<a href='javascript:load_entity_infobox(\"",
                         data.url,"\")'>",data.title,"</a>"
                     ].join(""))
                     })
-                $.getJSON(data.target,function(data) {
+                $.getJSON(data.target_url,function(data) {
                     li.find(".target").html([
                         "<a href='javascript:load_entity_infobox(\""
                         ,data.url,"\")'>",data.title,"</a>"
