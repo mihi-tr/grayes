@@ -3,7 +3,7 @@ var sigInst;
 var colorspace = {};
 var edgecolorspace = {};
 var zoomlevel=1;
-var network='test';
+var network='grasser-network';
 var converter= new Markdown.Converter;
 
 function zoomin() {
