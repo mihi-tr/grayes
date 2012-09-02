@@ -188,7 +188,7 @@ maxRatio: 32
 // Draw the graph :
 sigInst.draw();
 sigInst.startForceAtlas2();
-setTimeout(function() {sigInst.stopForceAtlas2()},5000);
+setTimeout(function() {sigInst.stopForceAtlas2()},8000);
 
 }
 
