@@ -1,4 +1,5 @@
 {% extends "djangorestframework/base.html" %}
+{% load static %}
 {% block extrahead %}
 <style type="text/css">
     .relation-instance fieldset.module .form-row,
@@ -11,7 +12,7 @@
     .relation-list fieldset.module .form-row.target,
     .relation-list fieldset.module .form-row.title,
     .relation-list fieldset.module .form-row.source {
-        width: 12em;
+        width: 14em;
         clear: none;
     }
     .relation-instance fieldset.module .form-row.source,
@@ -22,95 +23,15 @@
         clear: none;
     }
 
+    .reference .delete {
+        display: block-inline;
+        margin-top: 1.75em;
+    }
+    .reference.new .delete {
+        display: none;
+    }
+
 </style>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
-<script type="text/javascript">
-Array.prototype.remove = function(from, to) {
-    var rest = this.slice((to || from) + 1 || this.length);
-    this.length = from < 0 ? this.length + from : from;
-    return this.push.apply(this, rest);
-};
-    var data = [];
-
-    function update_in_references(container) {
-        var newel = {}
-        $(container).find('input').each(function() {
-            newel[$(this).attr('rel')] = this.value;
-            });
-        var id = container.data('element');
-        if(id == 'new') {
-            container.data('element', data.references.length);
-            data.references.push(newel);
-            $('[name=data]').parent().append(build_reference_form({}, 'new'));
-        } else {
-            data.references[id]=newel;
-        }
-        var data_el = $('[name="data"]').val(JSON.stringify(data));
-    }
-
-    function data_onblur(event) {
-        var el = this;
-        var container = $(el).parents('.reference');
-        var id = $(container).data('element');
-        var allfull = true;
-        $(container).find('input').each(function() {
-            if(!this.value) {
-                allfull = false;
-            }
-        });
-        if(allfull) {
-            update_in_references(container);
-        }
-    }
-
-    function build_labeled_input(name, data) {
-        var container = document.createElement('div');
-        var input = document.createElement('input');
-        $(input).attr('rel', name);
-        if(data[name]) {
-            input.value = data[name];
-        }
-        var label = document.createElement('label');
-        label.innerHTML = name;
-        container.appendChild(label);
-        container.appendChild(input);
-        $(container).css('width', '12em');
-        $(container).css('float', 'left');
-        return [container, label, input];
-    }
-    function build_reference_form(data, id) {
-        var container = document.createElement('div');
-        var date_field = build_labeled_input('date', data);
-        var link_field = build_labeled_input('link', data);
-        var title_field = build_labeled_input('title', data);
-        var medium_field = build_labeled_input('medium', data);
-        container.appendChild(date_field[0]);
-        container.appendChild(link_field[0]);
-        container.appendChild(title_field[0]);
-        container.appendChild(medium_field[0]);
-        $(container).addClass('reference');
-        $(container).css('clear', 'left');
-        $(container).data('element', id);
-        cntnr = container;
-        $(container).css('margin-left', '10em');
-        $(container).find('input').live('blur', data_onblur);
-        return container;
-    }
-    function build_references() {
-        var data_el = $('[name="data"]');
-        data_el.hide();
-        var v = $(data_el).val();
-        data = JSON.parse(v);
-        if(!data.references) {
-            data.references = [];
-        }
-        $.each(data.references, function(i,e) {
-            data_el.parent().append(build_reference_form(this, i));
-        });
-        data_el.parent().append(build_reference_form({}, 'new'));
-    };
-    $(document).ready(function() {
-        build_references();
-    });
-</script>
+<script type="text/javascript" src="{% static 'djangorestframework.js' %}"></script>
 {% endblock %}
