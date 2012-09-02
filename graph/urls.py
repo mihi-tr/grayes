@@ -48,15 +48,24 @@ class RelationResource(ModelResource):
     model=Relation
     form=RelationForm
 
-    def source(self, instance):
+    include = ['source_url', 'target_url', 'network_url']
+    exclude = ['source', 'target', 'network']
+
+    def source_url(self, instance):
+        if not isinstance(instance, Relation):
+            return
         return reverse('entity', kwargs={'slug': instance.source.slug},
             request=self.request)
 
-    def target(self, instance):
+    def target_url(self, instance):
+        if not isinstance(instance, Relation):
+            return
         return reverse('entity', kwargs={'slug': instance.target.slug},
             request=self.request)
 
-    def network(self, instance):
+    def network_url(self, instance):
+        if not isinstance(instance, Relation):
+            return
         return reverse('network', kwargs={'slug': instance.network.slug},
             request=self.request)
 
