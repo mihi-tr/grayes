@@ -171,7 +171,7 @@ maxRatio: 32
         edgetypes.push(type)
         }
     })
- var step=255./(edgetypes.length-1);
+ var step=255./(edgetypes.length>1?edgetypes.length-1:1);
  for (i=0.; i<edgetypes.length; i++) {
 
     edgecolorspace[edgetypes[i]]="hsl("+i*step+",100%,75%)";
@@ -188,7 +188,7 @@ maxRatio: 32
 // Draw the graph :
 sigInst.draw();
 sigInst.startForceAtlas2();
-setTimeout(function() {sigInst.stopForceAtlas2()},5000);
+setTimeout(function() {sigInst.stopForceAtlas2()},8000);
 
 }
 
