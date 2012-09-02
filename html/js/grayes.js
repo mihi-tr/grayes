@@ -127,6 +127,7 @@ function load_entity_info(event){
     }
 
 function init() {
+    $('#network').css("height",$(window).height()-100+"px")
 // Instanciate sigma.js and customize rendering :
 sigInst =
 sigma.init(document.getElementById('network')).drawingProperties({
