@@ -124,5 +124,6 @@ function build_references() {
 };
 $(document).ready(function() {
     build_references();
+    $("select").chosen()
 });
 
