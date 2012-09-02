@@ -14,6 +14,7 @@
     }
 #header h1 {
     margin: 10px;
+    display: inline-block;
     }
 body {
     background: #505050;
