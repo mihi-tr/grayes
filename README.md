@@ -22,4 +22,8 @@ run::
 
 to start a simple server - start editing your networks.    
 
+Frontend
+--------
 
+A sample frontend can be found in the html/ subdirectory. Open the
+index.html once you created some networks and discover!
